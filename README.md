@@ -6,6 +6,5 @@
 
   Work with the Android App which my CMCC Sim card is in.
   
-  The Android App code is [here](https://github.com/LueChen/Clean-SmS-Forwarding)
-  
+  The Android App code is [here](https://github.com/LueChen/Clean-SmS-Forwarding). Forked from: [https://github.com/autosquid](https://github.com/autosquid), Many thanks to him.
   
