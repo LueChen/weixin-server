@@ -6,7 +6,9 @@ import web
 
 import reply
 import receive
-import basic
+
+global msgs
+msgs = {}
 
 class Handle(object):
     def GET(self):
@@ -44,7 +46,15 @@ class Handle(object):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if recMsg.MsgType == 'text':
-                    content = "test"
+                    query = recMsg.Content
+                    if query in msgs.keys():
+                      if msgs[query]:
+                        content = msgs[query].pop();
+                      else:
+                        content = 'there is no msg for ' + query
+                    else:
+                      content = 'there is no msg for ' + query
+
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
                 if recMsg.MsgType == 'image':
@@ -60,4 +70,27 @@ class Handle(object):
             return Argment
 
 
+class Phone(object):
+    def GET(self):
+        data = web.input()
+        if len(data) == 0:
+            return "hello, this is phone view"
 
+    def POST(self):
+        webData = web.data()
+        print "Handle Post webdata is ", webData   #后台打日志
+        recMsg = receive.parse_xml(webData)
+        if isinstance(recMsg, receive.Msg):
+          fromUser = recMsg.ToUserName
+          if isinstance(recMsg, receive.TextMsg):
+            # 只取末尾的11位作为key值，方便查询手机号
+            if not recMsg.FromUserName[-11:] in msgs.keys():
+              msgs[recMsg.FromUserName[-11:]] = [recMsg.Content]
+            else:
+              msgs[recMsg.FromUserName[-11:]].append(recMsg.Content)
+              return 'success'
+
+          return 'success'
+        else:
+          print "暂且不处理"
+          return 'success'
