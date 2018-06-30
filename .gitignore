@@ -11,6 +11,7 @@ metastore_db
 common/src/gen
 .idea
 *.iml
+*.pyc
 *.ipr
 *.iws
 *.swp
