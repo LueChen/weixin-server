@@ -46,14 +46,14 @@ class Handle(object):
                 toUser = recMsg.FromUserName
                 fromUser = recMsg.ToUserName
                 if recMsg.MsgType == 'text':
-                    query = recMsg.Content
-                    if query in msgs.keys():
-                      if msgs[query]:
-                        content = msgs[query].pop();
+                    queryUser = recMsg.Content
+                    if queryUser in msgs.keys():
+                      if msgs[queryUser]:
+                        content = msgs[queryUser].pop();
                       else:
-                        content = 'there is no msg for ' + query
+                        content = 'there is no msg for ' + queryUser
                     else:
-                      content = 'there is no msg for ' + query
+                      content = 'there is no msg for ' + queryUser
 
                     replyMsg = reply.TextMsg(toUser, fromUser, content)
                     return replyMsg.send()
@@ -81,13 +81,14 @@ class Phone(object):
         print "Handle Post webdata is ", webData   #后台打日志
         recMsg = receive.parse_xml(webData)
         if isinstance(recMsg, receive.Msg):
-          fromUser = recMsg.ToUserName
+          recUser = '99108515'
           if isinstance(recMsg, receive.TextMsg):
-            # 只取末尾的11位作为key值，方便查询手机号
-            if not recMsg.FromUserName[-11:] in msgs.keys():
-              msgs[recMsg.FromUserName[-11:]] = [recMsg.Content]
+            # 当前固定使用99108515作为我的手机代号
+            content = '[Msg From ' + recMsg.FromUserName + ']: \n' + recMsg.Content
+            if not recUser in msgs.keys():
+              msgs[recUser] = [content]
             else:
-              msgs[recMsg.FromUserName[-11:]].append(recMsg.Content)
+              msgs[recUser].append(content)
               return 'success'
 
           return 'success'
