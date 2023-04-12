@@ -5,6 +5,7 @@ import urllib
 import time
 import json
 
+
 class Basic:
     def __init__(self):
         self.__accessToken = ''
@@ -14,12 +15,11 @@ class Basic:
         appId = "wxf288b7197904d16a"
         appSecret = "407b49edb598ad0d9df64fac1d662a5b"
         postUrl = ("https://api.weixin.qq.com/cgi-bin/token?grant_type="
-               "client_credential&appid=%s&secret=%s" % (appId, appSecret))
+                   "client_credential&appid=%s&secret=%s" % (appId, appSecret))
         urlResp = urllib.urlopen(postUrl)
         urlResp = json.loads(urlResp.read())
         self.__accessToken = urlResp['access_token']
         self.__leftTime = urlResp['expires_in']
-
 
     def get_access_token(self):
         if self.__leftTime < 10:
@@ -27,11 +27,9 @@ class Basic:
         return self.__accessToken
 
     def run(self):
-        while(True):
+        while (True):
             if self.__leftTime > 10:
                 time.sleep(2)
                 self.__leftTime -= 2
             else:
                 self.__real_get_access_token()
-
-

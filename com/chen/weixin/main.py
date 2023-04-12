@@ -11,8 +11,8 @@ urls = (
 )
 
 if __name__ == '__main__':
-#    basic.Basic().run()
+    #    basic.Basic().run()
 
     app = web.application(urls, globals())
-    print "fucking start: "
+    print("fucking start: ")
     app.run()
